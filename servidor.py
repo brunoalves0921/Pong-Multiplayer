@@ -32,8 +32,6 @@ print("Servidor iniciado e aguardando conexões...")
 IPV4 = socket.gethostbyname(socket.gethostname())
 print("[TCP] " + IPV4 + ":" + str(PORT))
 
-
-
 thread_broadcast = Thread(target=broadcast)
 thread_broadcast.start()
 
@@ -43,17 +41,13 @@ print("[TCP]: Cliente 1 conectado:", client1_address)
 
 # Envia uma mensagem de confirmação ao cliente 1
 client1_socket.sendall(b'connected1')
-# broadcast()
+
 # Aceita a conexão do cliente 2
 client2_socket, client2_address = server_socket.accept()
 print("[TCP]: Cliente 2 conectado:", client2_address)
 
 # Envia uma mensagem de confirmação ao cliente 2
 client2_socket.sendall(b'connected2')
-
-# print("Esperando broadcast")
-
-
 
 # Loop principal do jogo
 while True:

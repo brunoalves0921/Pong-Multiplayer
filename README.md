@@ -36,26 +36,26 @@ O jogo de Pong implementado em Python utilizando os códigos do cliente e servid
 
 ## Executando o servidor
 
-* Salve o código do servidor em um arquivo chamado "server.py".
+1. Salve o código do servidor em um arquivo chamado "server.py".
 
-* Abra um terminal ou prompt de comando e navegue até o diretório onde o arquivo "server.py" está localizado.
+2. Abra um terminal ou prompt de comando e navegue até o diretório onde o arquivo "server.py" está localizado.
 
-* Execute o servidor com o comando python server.py.
+3. Execute o servidor com o comando python server.py.
 
 ## Executando o cliente
 
-* Salve o código do cliente em um arquivo chamado "client.py".
+1. Salve o código do cliente em um arquivo chamado "client.py".
 
-* Abra um terminal ou prompt de comando e navegue até o diretório onde o arquivo "client.py" está localizado.
+2. Abra um terminal ou prompt de comando e navegue até o diretório onde o arquivo "client.py" está localizado.
 
-* Execute o cliente com o comando python client.py.
+3. Execute o cliente com o comando python client.py.
 
     Siga as instruções exibidas na tela para estabelecer a conexão com o servidor. Você pode escolher conectar digitando o IP manualmente ou permitir que o cliente descubra automaticamente o IP do servidor.
 
 ## Jogando o jogo
 
-    Após estabelecer a conexão com o servidor, o jogo será iniciado automaticamente.
-    Use o movimento do mouse para controlar o "paddle" no jogo.
-    As teclas pressionadas serão transmitidas para o servidor, permitindo a interação entre os jogadores.
+_Após estabelecer a conexão com o servidor, o jogo será iniciado automaticamente.
+Use o movimento do mouse para controlar o "paddle" no jogo.
+As teclas pressionadas serão transmitidas para o servidor, permitindo a interação entre os jogadores._
 
 __Lembre-se de executar primeiro o servidor e, em seguida, os clientes para que possam se conectar adequadamente. Divirta-se jogando Pong!__
