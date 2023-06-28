@@ -68,7 +68,6 @@ while True:
     client1_keys = pickle.loads(data)
 
 
-
     data = client2_socket.recv(1024)
     client2_keys = pickle.loads(data)
 
