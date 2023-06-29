@@ -53,7 +53,9 @@ print("[TCP]: Cliente 2 conectado:", client2_address)
 client2_socket.sendall(b'connected2')
 
 # Variáveis para rastrear o menor e o maior ping e média de ping
-total_pings = [[0] * 100, [0] * 100]
+sec = 500
+fps = 60
+total_pings = [[0] * sec, [0] * sec]
 contador = 0
 
 # Loop principal do jogo
@@ -87,16 +89,16 @@ while True:
     if contador == len(total_pings[0]):
         contador = 0
 
-    media_pings = [sum(total_pings[0]) / 100, sum(total_pings[1]) / 100]
+    media_pings = [sum(total_pings[0]) / sec, sum(total_pings[1]) / sec]
 
-    if contador != 60 and contador != 0:
+    if contador % fps != 0:
         continue
 
     print()
     print("+-------------------+-------------------+-------------------+-------------------+")
     for i in range(2):
         # Formata as informações de acordo com o ping
-        ping_str = "Ping Player {}: {:.4f} ms".format(i+1, pings[i] * 1000)
+        ping_str = "Ping Player {}: {:.2f} ms".format(i+1, pings[i] * 1000)
         if media_pings[i] <= 0.03: # 30 ms
             ping_str = Fore.GREEN + ping_str + Fore.RESET
         elif media_pings[i] <= 0.05: # 50 ms
@@ -104,15 +106,15 @@ while True:
         else:
             ping_str = Fore.RED + ping_str + Fore.RESET
         # Formata o menor ping
-        min_ping_str = "Menor: {:.4f} ms".format(min(total_pings[i]) * 1000)
+        min_ping_str = "Menor: {:.2f} ms".format(min(total_pings[i]) * 1000)
         min_ping_str = Fore.BLUE + min_ping_str + Fore.RESET
 
         # Formata o maior ping
-        max_ping_str = "Maior: {:.4f} ms".format(max(total_pings[i]) * 1000)
+        max_ping_str = "Maior: {:.2f} ms".format(max(total_pings[i]) * 1000)
         max_ping_str = Fore.RED + max_ping_str + Fore.RESET
 
         # Formata o ping médio
-        media_ping_str = "Média: {:.4f} ms".format(media_pings[i] * 1000)
+        media_ping_str = "Média: {:.2f} ms".format(media_pings[i] * 1000)
         if media_pings[i] <= 0.03: # 30 ms
             media_ping_str = Fore.GREEN + media_ping_str + Fore.RESET
         elif media_pings[i] <= 0.05: # 50 ms

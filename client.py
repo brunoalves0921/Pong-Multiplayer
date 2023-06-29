@@ -7,7 +7,7 @@ from sys import exit
 # Configurações da tela
 WIDTH, HEIGHT = 960, 540
 WHITE = (255, 255, 255)
-FPS = 60
+FPS = 40
 
 # Classe para o jogador/paddle
 class Paddle(pygame.sprite.Sprite):
