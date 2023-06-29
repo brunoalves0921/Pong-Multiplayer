@@ -35,7 +35,7 @@ print("Servidor iniciado e aguardando conexões...")
 IPV4 = socket.gethostbyname(socket.gethostname())
 print("[TCP] " + IPV4 + ":" + str(PORT))
 
-thread_broadcast = Thread(target=broadcast)
+thread_broadcast = Thread(target=broadcast, daemon=True)
 thread_broadcast.start()
 
 # Aceita a conexão do cliente 1
@@ -53,69 +53,77 @@ print("[TCP]: Cliente 2 conectado:", client2_address)
 client2_socket.sendall(b'connected2')
 
 # Variáveis para rastrear o menor e o maior ping e média de ping
-min_ping = float('inf')
-max_ping = float('-inf')
-total_ping = 0
+min_pings = [float('inf')] * 2
+max_pings = [float('-inf')] * 2
+total_pings = [[0] * 100, [0] * 100]
 contador = 0
 
 # Loop principal do jogo
 while True:
-    start_time = time.time()  # Tempo de início da iteração
 
     # Recebe as teclas pressionadas pelos clientes
 
-    data = client1_socket.recv(1024)
+    time1 = time.time()
+    data = client1_socket.recv(64)
     client1_keys = pickle.loads(data)
 
-
-    data = client2_socket.recv(1024)
+    time2 = time.time()
+    data = client2_socket.recv(64)
     client2_keys = pickle.loads(data)
+    time3 = time.time()
 
 
     # Envia as teclas pressionadas aos clientes
 
     client1_socket.sendall(pickle.dumps(client2_keys))
-
-
     client2_socket.sendall(pickle.dumps(client1_keys))
 
 
-    end_time = time.time()  # Tempo de fim da iteração
-    elapsed_time = end_time - start_time  # Tempo decorrido da iteração
+    pings = [time2 - time1, time3 - time2]
 
-    min_ping = min(min_ping, elapsed_time)
-    max_ping = max(max_ping, elapsed_time)
-    total_ping += elapsed_time
+    for i in range(2):
+        min_pings[i] = min(min_pings[i], pings[i])
+        max_pings[i] = max(max_pings[i], pings[i])
+        total_pings[i][contador] = pings[i]
+
+
     contador += 1
-    media_ping = total_ping / contador
+    if contador == len(total_pings[0]):
+        contador = 0
 
-    # Formata as informações de acordo com o ping
-    ping_str = "Ping: {:.4f} ms".format(elapsed_time * 1000)
-    if media_ping <= 0.03: # 30 ms
-        ping_str = Fore.GREEN + ping_str + Fore.RESET
-    elif media_ping <= 0.05: # 50 ms
-        ping_str = Fore.YELLOW + ping_str + Fore.RESET
-    else:
-        ping_str = Fore.RED + ping_str + Fore.RESET
-    # Formata o menor ping
-    min_ping_str = "Menor: {:.4f} ms".format(min_ping * 1000)
-    min_ping_str = Fore.BLUE + min_ping_str + Fore.RESET
+    media_pings = [sum(total_pings[0]) / 100, sum(total_pings[1]) / 100]
 
-    # Formata o maior ping
-    max_ping_str = "Maior: {:.4f} ms".format(max_ping * 1000)
-    max_ping_str = Fore.RED + max_ping_str + Fore.RESET
+    if contador != 60 and contador != 0:
+        continue
 
-    # Formata o ping médio
-    media_ping_str = "Média: {:.4f} ms".format(media_ping * 1000)
-    if media_ping <= 0.03: # 30 ms
-        media_ping_str = Fore.GREEN + media_ping_str + Fore.RESET
-    elif media_ping <= 0.05: # 50 ms
-        media_ping_str = Fore.YELLOW + media_ping_str + Fore.RESET
-    else:
-        media_ping_str = Fore.RED + media_ping_str + Fore.RESET
+    for i in range(2):
+        # Formata as informações de acordo com o ping
+        ping_str = "Ping Player {}: {:.4f} ms".format(i+1, pings[i] * 1000)
+        if media_pings[i] <= 0.03: # 30 ms
+            ping_str = Fore.GREEN + ping_str + Fore.RESET
+        elif media_pings[i] <= 0.05: # 50 ms
+            ping_str = Fore.YELLOW + ping_str + Fore.RESET
+        else:
+            ping_str = Fore.RED + ping_str + Fore.RESET
+        # Formata o menor ping
+        min_ping_str = "Menor: {:.4f} ms".format(min_pings[i] * 1000)
+        min_ping_str = Fore.BLUE + min_ping_str + Fore.RESET
 
-    # Imprime as informações atualizadas em uma única linha
-    print("\r" + ping_str + " | " + min_ping_str + " | " + max_ping_str + " | " + media_ping_str, end="")
+        # Formata o maior ping
+        max_ping_str = "Maior: {:.4f} ms".format(max_pings[i] * 1000)
+        max_ping_str = Fore.RED + max_ping_str + Fore.RESET
+
+        # Formata o ping médio
+        media_ping_str = "Média: {:.4f} ms".format(media_pings[i] * 1000)
+        if media_pings[i] <= 0.03: # 30 ms
+            media_ping_str = Fore.GREEN + media_ping_str + Fore.RESET
+        elif media_pings[i] <= 0.05: # 50 ms
+            media_ping_str = Fore.YELLOW + media_ping_str + Fore.RESET
+        else:
+            media_ping_str = Fore.RED + media_ping_str + Fore.RESET
+
+        # Imprime as informações atualizadas em uma única linha
+        print("\r" + ping_str + " | " + min_ping_str + " | " + max_ping_str + " | " + media_ping_str, end=" "*10)
 
 # Fecha as conexões
 client1_socket.close()
