@@ -53,8 +53,6 @@ print("[TCP]: Cliente 2 conectado:", client2_address)
 client2_socket.sendall(b'connected2')
 
 # Variáveis para rastrear o menor e o maior ping e média de ping
-min_pings = [float('inf')] * 2
-max_pings = [float('-inf')] * 2
 total_pings = [[0] * 100, [0] * 100]
 contador = 0
 
@@ -82,8 +80,6 @@ while True:
     pings = [time2 - time1, time3 - time2]
 
     for i in range(2):
-        min_pings[i] = min(min_pings[i], pings[i])
-        max_pings[i] = max(max_pings[i], pings[i])
         total_pings[i][contador] = pings[i]
 
 
@@ -96,6 +92,8 @@ while True:
     if contador != 60 and contador != 0:
         continue
 
+    print()
+    print("+-------------------+-------------------+-------------------+-------------------+")
     for i in range(2):
         # Formata as informações de acordo com o ping
         ping_str = "Ping Player {}: {:.4f} ms".format(i+1, pings[i] * 1000)
@@ -106,11 +104,11 @@ while True:
         else:
             ping_str = Fore.RED + ping_str + Fore.RESET
         # Formata o menor ping
-        min_ping_str = "Menor: {:.4f} ms".format(min_pings[i] * 1000)
+        min_ping_str = "Menor: {:.4f} ms".format(min(total_pings[i]) * 1000)
         min_ping_str = Fore.BLUE + min_ping_str + Fore.RESET
 
         # Formata o maior ping
-        max_ping_str = "Maior: {:.4f} ms".format(max_pings[i] * 1000)
+        max_ping_str = "Maior: {:.4f} ms".format(max(total_pings[i]) * 1000)
         max_ping_str = Fore.RED + max_ping_str + Fore.RESET
 
         # Formata o ping médio
@@ -123,7 +121,8 @@ while True:
             media_ping_str = Fore.RED + media_ping_str + Fore.RESET
 
         # Imprime as informações atualizadas em uma única linha
-        print("\r" + ping_str + " | " + min_ping_str + " | " + max_ping_str + " | " + media_ping_str, end=" "*10)
+        print(ping_str + " | " + min_ping_str + " | " + max_ping_str + " | " + media_ping_str)
+
 
 # Fecha as conexões
 client1_socket.close()
