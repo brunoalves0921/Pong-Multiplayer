@@ -1,61 +1,44 @@
-# Jogo de Pong em Python
-## Descrição do Jogo
+# Pong Multiplayer
 
-_O Pong é um clássico jogo de arcade que simula um jogo de tênis de mesa. O objetivo é acertar a bola com um "paddle" e enviá-la para o campo adversário, evitando que a bola passe pelo próprio "paddle". O jogo continua até que um dos jogadores alcance uma pontuação predeterminada._
-Funcionamento do Jogo
+Este projeto consiste em um jogo de Pong multiplayer simples em que dois jogadores podem pressionar teclas e enviar comandos um ao outro. O jogo é baseado em um servidor centralizado que gerencia as interações entre os jogadores.
 
-## O jogo é dividido em duas partes:
-_o cliente e o servidor. O cliente é responsável por exibir a interface do jogo e lidar com a interação do jogador, enquanto o servidor é responsável por coordenar a comunicação entre os clientes e manter o estado do jogo._
-## Cliente
+## Funcionamento
 
-_O código do cliente é responsável por criar a interface gráfica do jogo usando a biblioteca Pygame. Ele se conecta ao servidor para permitir que dois jogadores joguem Pong em rede._
+O servidor é iniciado e aguarda a conexão de dois clientes. Quando os clientes se conectam, eles podem pressionar teclas para controlar seus personagens no jogo. Esses comandos são enviados ao servidor, que os encaminha para o jogador oposto. Isso permite que os jogadores interajam em tempo real.
 
-_Ao iniciar, o cliente exibe duas opções de conexão: "Conectar digitando IP" e "Conectar automaticamente". O jogador pode escolher uma das opções para se conectar ao servidor. Se selecionar "Conectar digitando IP", ele pode digitar o endereço IP do servidor manualmente. Se selecionar "Conectar automaticamente", o cliente enviará uma mensagem de broadcast para descobrir o endereço IP do servidor._
+## Dependências
 
-_Após estabelecer a conexão com o servidor, o cliente exibirá a tela do jogo. Cada jogador controla um "paddle" usando o movimento do mouse. A posição do mouse é enviada ao servidor, que repassa a posição do "paddle" do outro jogador de volta ao cliente. O cliente atualiza a posição do "paddle" e a exibe na tela._
+O projeto requer as seguintes dependências:
 
-_A bola se move pela tela e rebata nos "paddles" dos jogadores. Se a bola ultrapassar um "paddle" e atingir a borda oposta, o jogador adversário marca um ponto. O jogo continua até que um jogador alcance uma pontuação de 10. Quando isso acontece, o cliente exibe uma mensagem indicando o jogador vencedor e fecha o jogo._
-## Servidor
+- Python 3.x
+- Biblioteca `socket`
+- Biblioteca `pickle`
+- Biblioteca `threading`
+- Biblioteca `time`
+- Biblioteca `colorama`
 
-_O código do servidor é responsável por receber as conexões dos clientes e coordenar a comunicação entre eles. Ele utiliza sockets TCP para estabelecer a comunicação._
+Certifique-se de ter essas dependências instaladas em seu ambiente antes de executar o projeto.
 
-_O servidor inicia um socket e aguarda a conexão do cliente 1. Após a conexão ser estabelecida, o servidor envia uma mensagem de confirmação ao cliente 1 indicando que ele é o jogador 1. Em seguida, o servidor aguarda a conexão do cliente 2 e envia uma mensagem de confirmação indicando que ele é o jogador 2._
+## Executando o Projeto
 
-_Durante o jogo, o servidor recebe as teclas pressionadas pelos clientes e as envia de volta para o outro cliente. Isso permite que os "paddles" sejam atualizados em tempo real em ambos os clientes._
+Para executar o projeto, siga as etapas abaixo:
 
-_O servidor continua recebendo e enviando as teclas pressionadas até que o jogo seja encerrado._
-## Conclusão
+1. Certifique-se de ter o Python instalado em seu sistema.
+2. Execute o arquivo `server.py` para iniciar o servidor.
+3. Execute para cada jogador o arquivo `client.py`, depois disso os jogadores podem se conectar usando o endereço IP exibido pelo servidor ou fazer uma conexão automática selecionando a opção correspondente.
+4. Uma vez conectados, os jogadores podem pressionar as teclas para controlar suas raquetes no jogo.
+5. O servidor gerenciará o envio dos comandos para o jogador oposto, permitindo a interação multiplayer.
 
-O jogo de Pong implementado em Python utilizando os códigos do cliente e servidor fornecidos permite que dois jogadores joguem Pong em rede. Os jogadores podem se conectar ao servidor e controlar seus "paddles" usando o movimento do mouse. O servidor coordena a comunicação entre os jogadores, atualiza o estado do jogo e envia as informações relevantes de volta aos clientes.
+## Contribuições
 
-## Requisitos
+Contribuições são bem-vindas! Se você deseja contribuir com este projeto, siga as etapas abaixo:
 
-* Python 3 instalado no seu sistema.
-* Biblioteca Pygame instalada. Você pode
-* instalá-la usando o comando pip install pygame.
+1. Faça um fork deste repositório.
+2. Crie uma branch para suas alterações: `git checkout -b minha-branch`.
+3. Faça as alterações desejadas e faça commit delas: `git commit -m "Minha contribuição"`.
+4. Envie as alterações para o seu repositório fork: `git push origin minha-branch`.
+5. Abra um pull request neste repositório.
 
-## Executando o servidor
+## Autor
 
-1. Salve o código do servidor em um arquivo chamado "server.py".
-
-2. Abra um terminal ou prompt de comando e navegue até o diretório onde o arquivo "server.py" está localizado.
-
-3. Execute o servidor com o comando python server.py.
-
-## Executando o cliente
-
-1. Salve o código do cliente em um arquivo chamado "client.py".
-
-2. Abra um terminal ou prompt de comando e navegue até o diretório onde o arquivo "client.py" está localizado.
-
-3. Execute o cliente com o comando python client.py.
-
-    Siga as instruções exibidas na tela para estabelecer a conexão com o servidor. Você pode escolher conectar digitando o IP manualmente ou permitir que o cliente descubra automaticamente o IP do servidor.
-
-## Jogando o jogo
-
-_Após estabelecer a conexão com o servidor, o jogo será iniciado automaticamente.
-Use o movimento do mouse para controlar o "paddle" no jogo.
-As teclas pressionadas serão transmitidas para o servidor, permitindo a interação entre os jogadores._
-
-__Lembre-se de executar primeiro o servidor e, em seguida, os clientes para que possam se conectar adequadamente. Divirta-se jogando Pong!__
+Jorge Bruno Costa Alves. Universidade Federal do Ceará - Campus Quixadá.
