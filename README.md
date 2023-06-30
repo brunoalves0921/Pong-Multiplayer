@@ -41,4 +41,9 @@ Contribuições são bem-vindas! Se você deseja contribuir com este projeto, si
 
 ## Autor
 
-Jorge Bruno Costa Alves. Universidade Federal do Ceará - Campus Quixadá.
+Jorge Bruno Costa Alves
+
+*Universidade Federal do Ceará - Campus Quixadá.*
+
+## Créditos adicionais:
+O arquivo de som utilizado neste projeto foi criado por "michorvath" e está disponível para download em: [Link para o arquivo](https://freesound.org/people/michorvath/sounds/269718/)
