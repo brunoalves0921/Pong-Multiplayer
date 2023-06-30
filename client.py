@@ -7,7 +7,7 @@ from sys import exit
 # Configurações da tela
 WIDTH, HEIGHT = 960, 540
 WHITE = (255, 255, 255)
-FPS = 40
+FPS = 60
 
 # Classe para o jogador/paddle
 class Paddle(pygame.sprite.Sprite):
@@ -48,7 +48,7 @@ class Ball(pygame.sprite.Sprite):
 # Inicialização do Pygame
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Ping Pong")
+pygame.display.set_caption("Pong")
 clock = pygame.time.Clock()
 
 # Variáveis de controle do jogo
@@ -59,18 +59,18 @@ score_player2 = 0
 font = pygame.font.Font(None, 36)
 
 # Carrega o som da colisão da bola com a raquete
-collision_sound = pygame.mixer.Sound('collision_sound.mp3.wav')
+collision_sound = pygame.mixer.Sound('collision_sound.mp3')
 def broadcast():
     BROADCAST_IP = "255.255.255.255"
     BROADCAST_PORT = 3001
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #Cria um socket UDP
-    client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1) #Configura o socket para broadcast
-    client_socket.bind(("", 0))  # O cliente usa uma porta aleatória, Ip vazio para receber mensagens de qualquer endereço (SO toma de conta)
-    client_socket.sendto(b"broadcast", (BROADCAST_IP, BROADCAST_PORT)) #Envia a mensagem de broadcast
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #IPV4, UDP (User Datagram Protocol)
+    client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+    client_socket.bind(("", 0))  # Liga o servidor a porta especifica e IP o SO escolhe
+    client_socket.sendto(b"broadcast", (BROADCAST_IP, BROADCAST_PORT)) #Envia uma mensagem de broadcast
     data, server_address = client_socket.recvfrom(1024) #Espera receber uma mensagem de broadcast, função bloqueante, espera até que uma mensagem seja recebida
-    IP = data.decode() #Decodifica a mensagem
-    client_socket.close() #Fecha o socket
-    return IP #Retorna o IP do servidor
+    IP = data.decode()
+    client_socket.close()
+    return IP
 
 # inicia a tela principal do jogo com opções de conexão
 while True:
@@ -156,7 +156,7 @@ while True:
 # Recebe uma mensagem de confirmação do servidor
 data = client_socket.recv(1024)
 if data == b'connected1':
-    pygame.display.set_caption("Ping Pong - Jogador 1")
+    pygame.display.set_caption("Pong - Jogador 1")
     # mostra a tela de espera Conexão estabelecida com o servidor. Você é o jogador 1.
     screen.fill((0, 0, 0))
     score_text = font.render(f"Conexão estabelecida com o servidor. Você é o jogador 1.", True, WHITE)
@@ -164,7 +164,7 @@ if data == b'connected1':
     pygame.display.flip()
     isPlayer1 = True
 if data == b'connected2':
-    pygame.display.set_caption("Ping Pong - Jogador 2")
+    pygame.display.set_caption("Pong - Jogador 2")
 
 # Cria a bola
 ball = Ball(WIDTH // 2, HEIGHT // 2)
